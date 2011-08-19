@@ -583,7 +583,7 @@
 
     // some magic attrs to make the Node objects phone-home their physics-relevant changes
 
-    var defineProperty = Object.defineProperty != null ? 
+    var defineProperty = (window.__defineGetter__ == null || window.__defineSetter__ == null) ? 
 	  function (obj, name, desc){
         if(!obj.hasOwnProperty(name)){
 	      Object.defineProperty(obj, name, desc);
