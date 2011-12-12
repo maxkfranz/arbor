@@ -95,6 +95,7 @@
 
           var node = new Node(data)
           node.name = name
+          node._state = state;
           state.names[name] = node
           state.nodes[node._id] = node;
 
@@ -599,15 +600,16 @@
 
     var RoboPoint = function (n) {
       this._n = n;
+      this._state = state;
     }
     RoboPoint.prototype = new Point();
     defineProperty(RoboPoint.prototype, "x", {
       get: function(){ return this._n._p.x; },
-      set: function(newX){ state.kernel.particleModified(this._n._id, {x:newX}) }
+      set: function(newX){ this._state.kernel.particleModified(this._n._id, {x:newX}) }
     })
     defineProperty(RoboPoint.prototype, "y", {
       get: function(){ return this._n._p.y; },
-      set: function(newY){ state.kernel.particleModified(this._n._id, {y:newY}) }
+      set: function(newY){ this._state.kernel.particleModified(this._n._id, {y:newY}) }
     })
 
     defineProperty(Node.prototype, "p", {
@@ -617,7 +619,7 @@
       set: function(newP) { 
         this._p.x = newP.x
         this._p.y = newP.y
-        state.kernel.particleModified(this._id, {x:newP.x, y:newP.y})
+        this._state.kernel.particleModified(this._id, {x:newP.x, y:newP.y})
       }
     })
 
@@ -625,13 +627,13 @@
       get: function() { return this._mass; },
       set: function(newM) { 
         this._mass = newM
-        state.kernel.particleModified(this._id, {m:newM})
+        this._state.kernel.particleModified(this._id, {m:newM})
       }
     })
 
     defineProperty(Node.prototype, "tempMass", {
       set: function(newM) { 
-        state.kernel.particleModified(this._id, {_m:newM})
+        this._state.kernel.particleModified(this._id, {_m:newM})
       }
     })
 
@@ -639,7 +641,7 @@
       get: function() { return this._fixed; },
       set:function(isFixed) { 
         this._fixed = isFixed
-        state.kernel.particleModified(this._id, {f:isFixed?1:0})
+        this._state.kernel.particleModified(this._id, {f:isFixed?1:0})
       }
     })
     
